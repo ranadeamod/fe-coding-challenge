@@ -1,0 +1,25 @@
+.Game-Grid .Game-Grid-Row .Game-Grid-Cell {
+    width: 60px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.Game-Grid .Game-Grid-Row .Game-Grid-Cell:not(:last-child) {
+    border-right: solid 1px #777;
+}
+
+.Game-Grid .Game-Grid-Row .Game-Grid-Cell .unselected {
+    opacity: .3;
+}
+
+.Game-Grid .Game-Grid-Row .Game-Grid-Cell .selected {
+    font-weight: bold;
+}
+
+.Game-Grid .Game-Grid-Row .Game-Grid-Cell.no-selection-allowed {
+    cursor: not-allowed;
+    opacity: .5;
+}

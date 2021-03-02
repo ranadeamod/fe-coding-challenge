@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import { SELECT_CELL } from "../actions/moves";
+import {SELECT_CELL, DECLARE_WINNER, RESTART} from "../actions/moves";
 
 export const createBoard = (i) =>
   Array(i)
@@ -9,12 +9,18 @@ export const createBoard = (i) =>
         .fill(null)
     )
 
-export const board = (state = createBoard(3), action) => {
+const boardInitialState = createBoard(3);
+const gameInitialState = { currentPlayer: 'X', winner: null };
+
+export const board = (state = boardInitialState, action) => {
   switch (action.type) {
     case SELECT_CELL: {
       const newBoard = JSON.parse(JSON.stringify(state))
       newBoard[action.row][action.col] = action.currentPlayer
       return newBoard
+    }
+    case RESTART: {
+      return boardInitialState;
     }
     default: {
       return state
@@ -22,13 +28,22 @@ export const board = (state = createBoard(3), action) => {
   }
 }
 
-export const game = (state = { currentPlayer: 'X', winner: null }, action) => {
+export const game = (state = gameInitialState, action) => {
   switch (action.type) {
     case SELECT_CELL: {
       return {
         ...state,
         currentPlayer: state.currentPlayer === 'X' ? 'O' : 'X'
       }
+    }
+    case DECLARE_WINNER: {
+      return {
+        ...state,
+        winner: action.winner
+      };
+    }
+    case RESTART: {
+      return gameInitialState;
     }
     default: {
       return state

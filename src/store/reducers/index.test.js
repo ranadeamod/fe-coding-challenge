@@ -26,8 +26,15 @@ describe('board', () => {
     state[0][0] = 'X'
 
     expect(result).toEqual(state)
-  })
-})
+  });
+
+  it('should update the board to restart the game from scratch', () => {
+    const state = createBoard(3);
+    const result = board(state, Actions.restartGame());
+    expect(result).toEqual(state);
+  });
+
+});
 
 describe('game', () => {
   it('should create a default game state with current player and no winner', () => {
@@ -38,7 +45,7 @@ describe('game', () => {
     const result = game(undefined, {})
 
     expect(result).toEqual(expectedState)
-  })
+  });
 
   it('should update a co-ordinate to match the currentPlayer', () => {
     const xState = { currentPlayer: 'X', winner: null }
@@ -49,5 +56,12 @@ describe('game', () => {
 
     expect(xResult).toEqual(oState)
     expect(oResult).toEqual(xState)
-  })
-})
+  });
+
+  it('should update the game to reset the player information', () => {
+    const state = { currentPlayer: 'X', winner: null };
+    const result = game(undefined, Actions.restartGame());
+    expect(result).toEqual(state);
+  });
+
+});

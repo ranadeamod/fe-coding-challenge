@@ -1,0 +1,20 @@
+.Game-Grid {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0 0 0 2rem;
+}
+
+.Game-Grid .Game-Grid-Row {
+    height: 60px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-color: #777;
+    border-width: 1px 1px 0 1px;
+    border-style: solid;
+}
+
+.Game-Grid .Game-Grid-Row:last-child {
+    border-bottom: solid 1px #777;
+}

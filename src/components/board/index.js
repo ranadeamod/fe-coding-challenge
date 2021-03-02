@@ -1,28 +1,64 @@
-import React from 'react';
-import './index.css';
+import React, {useEffect, useState} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectCell } from '../../store/actions/moves';
+import { declareWinner, restartGame } from '../../store/actions/moves';
+import { fetchWonPlayer } from '../../helpers/FetchWonPlayer';
+import { Game } from '../game';
 
-const selectBoard = (state) => state.board
-const selectGame = (state) => state.game
+import './index.css';
 
-const getRandomCell = (i) => Math.floor(Math.random() * i)
+const selectBoard = (state) => state.board;
+export const selectGame = (state) => state.game;
 
 export const Board = () => {
-  const board = useSelector(selectBoard)
-  const game = useSelector(selectGame)
-  const dispatch = useDispatch()
+    const board = useSelector(selectBoard);
+    const game = useSelector(selectGame);
+    const dispatch = useDispatch();
+    const [isDraw, setIsDraw] = useState(false);
 
-  return (
-    <div className="Board">
-      Board: { JSON.stringify(board) }
-      <div onClick={() => dispatch(
-        selectCell(
-          game.currentPlayer,
-          getRandomCell(board.length),
-          getRandomCell(board.length)
-        )
-      )}>Player {game.currentPlayer}</div>
-    </div>
-  )
+    const onRestartGame = () => {
+        dispatch(restartGame());
+    }
+
+    useEffect(() => {
+        if (game.winner === null) {
+            const winner = fetchWonPlayer(board);
+            if (winner) {
+                dispatch(declareWinner(winner));
+            } else {
+                if (board.flat().filter(val => val === null).length < 1) {
+                    setIsDraw(true);
+                }
+            }
+        }
+    });
+
+    return (
+        <div className="Board">
+            <div className="Board-Header">
+                <div>Deal:</div>
+                <div className="Board-Player-Container">
+                    <div className={'Board-Player' + (game.winner === null && game.currentPlayer === 'X' ? ' Dealing' : '')}>X</div>
+                    <div className={'Board-Player' + (game.winner === null && game.currentPlayer === 'O' ? ' Dealing' : '')}>O</div>
+                </div>
+            </div>
+
+            <Game board={board} player={game.currentPlayer} />
+
+            {
+                game.winner !== null &&
+                <div className="Board-Winner">
+                    Player <strong>{game.winner}</strong> wins the game!
+                    <button onClick={onRestartGame}>Restart</button>
+                </div>
+            }
+
+            {
+                isDraw &&
+                <div className="Board-Draw">
+                    Its a draw
+                    <button onClick={onRestartGame}>Restart</button>
+                </div>
+            }
+        </div>
+    )
 }

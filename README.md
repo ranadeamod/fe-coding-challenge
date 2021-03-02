@@ -41,3 +41,16 @@ You will also see any lint errors in the console.
 
 Launches the test runner in the interactive watch mode.<br />
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+
+## Notes for Reviewers
+* As stated in the readme, the original code is legacy and is not expected to be optimized. Hence instead of touching
+  the legacy code for any modifications, I took the liberty to flatten the "board" array (multi-dimensional) for better 
+  and easy decision-making to derive a winner. The results can be achieved by referring to the legacy code and writing 
+  recursive and little complex logics (check horizontal matches, check vertical matches and check diagonal matches), 
+  but I felt they are not necessary.
+* I have updated (and written) the required test cases, but the project is not set up to generate code coverage to
+  validate the coverage %. I have not enabled it, not sure if that was a requirement. It can be done using jest along 
+  with istanbul coverage libraries.
+* I haven't used any UI libraries to beautify the look and feel. Instead have written some custom CSS to make it look
+  little better.
+* No Async actions have been used due to their unsuitability for the current requirement.
